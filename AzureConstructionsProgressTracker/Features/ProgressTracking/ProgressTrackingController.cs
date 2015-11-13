@@ -10,14 +10,26 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AzureConstructionsProgressTracker.Models;
+using Microsoft.WindowsAzure.Storage;
 
 namespace AzureConstructionsProgressTracker.Features.ProgressTracking
 {
     public class ProgressTrackingController : Controller
     {
-        private readonly ConstructionsProgressTrackerContext _db = new ConstructionsProgressTrackerContext();
-        private readonly FilesStorageService _filesStorageService = new FilesStorageService();
-        
+        private ConstructionsProgressTrackerContext _db = new ConstructionsProgressTrackerContext();
+        private readonly FilesStorageService _filesStorageService;
+
+        public ProgressTrackingController()
+        {
+            CloudStorageAccount cloudStorageAccount;
+            if (CloudStorageAccount.TryParse(
+                ConfigurationManager.ConnectionStrings["AzureStorage"].ConnectionString,
+                out cloudStorageAccount))
+            {
+                _filesStorageService = new FilesStorageService(cloudStorageAccount);
+            }
+        }
+
         // GET: ProgressTracking
         public async Task<ActionResult> Index()
         {
