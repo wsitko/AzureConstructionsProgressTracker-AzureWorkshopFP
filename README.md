@@ -35,7 +35,7 @@ Kryteria akceptacji:
 ### Zadanie 3 - przetwarzanie w tle
 
 ``` git 
-git checkout ex-2-start-background-processing
+git checkout ex-3-start-background-processing
 
 ```
 
