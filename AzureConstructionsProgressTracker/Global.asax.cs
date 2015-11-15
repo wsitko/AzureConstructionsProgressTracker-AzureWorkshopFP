@@ -8,6 +8,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using AzureConstructionsProgressTracker.Common;
 using AzureConstructionsProgressTracker.Features.ProgressTracking;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace AzureConstructionsProgressTracker
 {
@@ -20,6 +21,10 @@ namespace AzureConstructionsProgressTracker
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            var instrumentationKey = ConfigurationManager.AppSettings["AppInsightsInstrumentationKey"];
+            if (!string.IsNullOrWhiteSpace(instrumentationKey))
+                TelemetryConfiguration.Active.InstrumentationKey = instrumentationKey;
+            
             var serviceBusManager = new ServiceBusManager(ConfigurationManager.ConnectionStrings["AzureWebJobsServiceBus"].ConnectionString);
             serviceBusManager.CreateQueue();
         }
