@@ -38,6 +38,7 @@ Kryteria akceptacji:
 git checkout ex-3-start-background-processing
 
 ```
+Część pierwsza
 
 - Stwórz usługę Service Bus Namespace
 - Zaimplementuj komunikację pomiędzy Web App a Web Job przy pomocy Service Bus. 
@@ -50,3 +51,23 @@ git checkout ex-3-start-background-processing
 Kryteria akceptacji:
 - Zdjecia dodawane przez aplikację, są zmniejszane przez Web Job i na liście wpisów wyświetlane są ich miniatury.
 
+Część druga:
+- Skonfiguruj aplikację konsolową PictureOptimizer aby została automatycznie wgrana jako Web Job
+
+Pełne rozwiązanie:
+``` git 
+git checkout ex-3-extra-background-processing-as-web-job
+
+```
+
+
+### Zadanie 4 - application insights
+
+- Skonfiguruj aplikację, aby wysyłała dane telemetryczne do usługi Application Insights
+
+Pełne rozwiązanie:
+
+``` git 
+git checkout ex-4-finish-application-insights
+
+```
