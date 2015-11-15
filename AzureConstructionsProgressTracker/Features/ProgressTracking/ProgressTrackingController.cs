@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using AzureConstructionsProgressTracker.Models;
+using AzureConstructionsProgressTracker.Common;
+using Common;
 using Microsoft.WindowsAzure.Storage;
+using Newtonsoft.Json;
 
 namespace AzureConstructionsProgressTracker.Features.ProgressTracking
 {
@@ -18,6 +20,7 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
     {
         private ConstructionsProgressTrackerContext _db = new ConstructionsProgressTrackerContext();
         private readonly FilesStorageService _filesStorageService;
+        private readonly ServiceBusManager _serviceBusManager = new ServiceBusManager(ConfigurationManager.ConnectionStrings["AzureWebJobsServiceBus"].ConnectionString);
 
         public ProgressTrackingController()
         {
@@ -72,7 +75,7 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
                     if (file != null && file.ContentLength > 0)
                     {
                         var fileName = Path.GetFileName(file.FileName);
-                        var filePath = await _filesStorageService.UploadFile(fileName, file);
+                        var filePath = await _filesStorageService.UploadFile(fileName, file.InputStream);
                         progressTrackingEntry.PictureReference = filePath;
                     }
                 }
@@ -80,6 +83,13 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
                 progressTrackingEntry.EntryDate = DateTime.Now;
                 _db.ProgressTrackingEntries.Add(progressTrackingEntry);
                 await _db.SaveChangesAsync();
+
+                await _serviceBusManager.Enqueue(new ResizePictureMessage
+                {
+                    Id = progressTrackingEntry.Id,
+                    PictureReference = progressTrackingEntry.PictureReference
+                });
+
                 return RedirectToAction("Index");
             }
 

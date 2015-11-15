@@ -32,3 +32,21 @@ git checkout ex-2-start-storage
 Kryteria akceptacji:
 - Potrafisz dodać nowy wpis ze zdjęciem do dziennika projektu oraz wyświetlić to zdjęcie na liście wpisów.
 
+### Zadanie 3 - przetwarzanie w tle
+
+``` git 
+git checkout ex-2-start-background-processing
+
+```
+
+- Stwórz usługę Service Bus Namespace
+- Zaimplementuj komunikację pomiędzy Web App a Web Job przy pomocy Service Bus. 
+	- Uzupełnij implementację w miejscach wskazanych komentarzem "TODO ex3:"
+    - Uzupełnij brakujące wartości w konfiguracji
+- Przy pracy nad tym zadaniem przydatne może się okazać kożystanie z Web Job Dashboard. Ponizszy artykuł pokazuje jak go uruchomić:
+    - http://blogs.msdn.com/b/jmstall/archive/2014/01/27/getting-a-dashboard-for-local-development-with-the-webjobs-sdk.aspx
+    - Aktualizacja do artykułu: zamiast klucza "AzureJobsRuntime", należy odpowiednio ustawić "AzureWebJobsDashboard" i "AzureWebJobsStorage".
+    
+Kryteria akceptacji:
+- Zdjecia dodawane przez aplikację, są zmniejszane przez Web Job i na liście wpisów wyświetlane są ich miniatury.
+

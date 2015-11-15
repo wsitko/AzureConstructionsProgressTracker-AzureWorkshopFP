@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace AzureConstructionsProgressTracker.Features.ProgressTracking
+namespace Common
 {
     public class FilesStorageService
     {
@@ -19,7 +19,7 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
             _container = blobClient.GetContainerReference(ContainerName);
         }
         
-        public async Task<string> UploadFile(string fileName, HttpPostedFileBase file)
+        public async Task<string> UploadFile(string fileName, Stream file)
         {
             if (!_container.Exists())
             {
@@ -28,7 +28,7 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
             }
 
             CloudBlockBlob blockBlob = _container.GetBlockBlobReference(fileName);
-            await blockBlob.UploadFromStreamAsync(file.InputStream);
+            await blockBlob.UploadFromStreamAsync(file);
             return $"{_blobStorageUri.PrimaryUri}{ContainerName}/{fileName}";
         }
     }
