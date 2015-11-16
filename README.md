@@ -71,3 +71,18 @@ Pełne rozwiązanie:
 git checkout ex-4-finish-application-insights
 
 ```
+
+### Zadanie 5 - skalowanie
+
+``` git 
+git checkout ex-5-scaling)
+
+```
+
+- Uruchom powyższa wersję aplikacji w Azure
+- Skonfiguruj Web App ręcznie, aby obsługiwała ruch na więcej niż jednej instancji. Upewnij się, że requesty obsługiwane są przez różne instancje.
+- Extra: Skonfiguruj w Web App reguły autoskalowania i doprowadz do obciążenia systemu, tak aby dprowadzić do skalowania
+    - Stwórz funkcę obsługi wiadomości dla nowej kolejki
+    - Zaimplementuj w niej kod mocno obciążający procesor np.: http://stackoverflow.com/questions/13001578/i-need-a-slow-c-sharp-function)
+    - Wykorzystaj Service Bus Explorer (https://code.msdn.microsoft.com/windowsapps/Service-Bus-Explorer-f2abca5a) aby dodać ko kolejki dużo wiadomości i mocno obciążyć WebApp.
+
