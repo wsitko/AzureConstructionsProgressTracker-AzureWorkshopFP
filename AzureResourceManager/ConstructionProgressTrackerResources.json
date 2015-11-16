@@ -1,0 +1,71 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "0.0.1",
+  "parameters": {
+    "websiteName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "storageName": "[concat(parameters('websiteName'), 'storage')]",
+    "databaseName": "[concat(parameters('websiteName'), 'db')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2015-05-01-preview",
+      "name": "[variables('storageName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "Standard_GRS"
+      }
+    },
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2015-05-01-preview",
+      "name": "[variables('databaseName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "administratorLogin": "szabl",
+        "administratorLoginPassword": "P@ssw0rd"
+      },
+      "resources": [
+        {
+          "type": "databases",
+          "apiVersion": "2015-05-01-preview",
+          "name": "[variables('databaseName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', variables('databaseName'))]"
+          ],
+          "properties": {
+            "edition": "Basic"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('websiteName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "F1",
+        "tier": "Free",
+        "size": "F1"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('websiteName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverfarms/', parameters('websiteName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('websiteName'))]"
+      }
+    }
+  ]
+}
