@@ -167,6 +167,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Features\ConstructionProjects\ConstructionProject.cs" />
     <Compile Include="Features\ConstructionProjects\ConstructionProjectsController.cs" />
+    <Compile Include="Features\ProgressTracking\FilesStorageService.cs" />
     <Compile Include="Features\ProgressTracking\ProgressTrackingController.cs" />
     <Compile Include="Features\ProgressTracking\ProgressTrackingEntry.cs" />
     <Compile Include="Global.asax.cs">
